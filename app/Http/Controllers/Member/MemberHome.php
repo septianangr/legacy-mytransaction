@@ -25,15 +25,22 @@ class MemberHome extends Controller
         $epThisMonth = $transactions->GetSUM($userID, date('Y-m'), NULL);
         $epLastMonth = $transactions->GetSUM($userID, date('Y-m', strtotime('-1 month')), NULL);
         $epTotal = $transactions->GetSUM($userID, NULL, NULL);
-        $presentase = ($epThisMonth - $epLastMonth) / $epLastMonth * 100;
+    
+        if ($epTotal != 0) {
 
-        if ($presentase >= 100) {
+            $presentase = ($epThisMonth - $epLastMonth) / $epLastMonth * 100;
 
-            $presentase = substr($presentase, 0, 3);
+            if ($presentase >= 100) {
+
+                $presentase = substr($presentase, 0, 3);
+            } else {
+
+                $presentase = substr($presentase, 0, 4);
+            } 
         } else {
-
-            $presentase = substr($presentase, 0, 4);
+            $presentase = 0;
         }
+        
 
         $manifest = [
             'site_name' => $identity['site_name'],
